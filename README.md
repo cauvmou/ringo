@@ -1,2 +1,2 @@
 # ringo
-Rust bingo API.
+Rust bingo application.
