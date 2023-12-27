@@ -410,7 +410,8 @@
           }
         }
       }
-    }
+    },
+    "/game": {}
   },
   "components": {
     "securitySchemes": {
@@ -475,6 +476,38 @@
             "items": {
               "type": "string"
             }
+          }
+        }
+      },
+      "Board": {
+        "type": "object",
+        "properties": {
+          "seed": {
+            "type": "string"
+          },
+          "size": {
+            "type": "integer"
+          },
+          "fields": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Field"
+            }
+          }
+        }
+      },
+      "Field": {
+        "type": "object",
+        "properties": {
+          "index": {
+            "type": "integer"
+          },
+          "value": {
+            "type": "string"
+          },
+          "crossed_at": {
+            "type": "string",
+            "nullable": true
           }
         }
       }
