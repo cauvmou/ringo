@@ -7,13 +7,36 @@
   },
   "servers": [
     {
-      "url": "https"
+      "url": "https://127.0.0.1/api"
+    }
+  ],
+  "tags": [
+    {
+      "name": "room",
+      "description": "Paths that relate directly to the room."
+    },
+    {
+      "name": "player",
+      "description": "Paths that relate directly to the player."
+    },
+    {
+      "name": "unauthorized",
+      "description": "Paths that are accessible without authorization."
+    },
+    {
+      "name": "authorized",
+      "description": "Paths that are only accessible with authorization."
+    },
+    {
+      "name": "game",
+      "description": "Paths that relate to the running game."
     }
   ],
   "paths": {
     "/room": {
       "get": {
         "description": "Get Information about the players in a room.",
+        "tags": ["room","authorized"],
         "security": [
           {
             "UserAuth": []
@@ -62,6 +85,7 @@
       },
       "post": {
         "description": "Create a new room",
+        "tags": ["room","unauthorized"],
         "security": [
           {}
         ],
@@ -106,6 +130,7 @@
       },
       "patch": {
         "description": "Change the rooms settings.",
+        "tags": ["room","authorized"],
         "security": [
           {
             "UserAuth": []
@@ -158,6 +183,7 @@
       },
       "put": {
         "description": "Enter a game room.",
+        "tags": ["room","unauthorized"],
         "security": [
           {}
         ],
@@ -240,6 +266,7 @@
       },
       "delete": {
         "description": "Leave the room.",
+        "tags": ["room","authorized"],
         "security": [
           {
             "UserAuth": []
@@ -270,6 +297,113 @@
                 "example": {
                   "status": 401,
                   "description": "No user was found."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/player": {
+      "get": {
+        "description": "Get information about a player.",
+        "tags": ["player","authorized"],
+        "security": [
+          {
+            "UserAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "username",
+            "description": "The player in question.",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved information",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Player"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authenticated.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericResponse"
+                },
+                "example": {
+                  "status": 401,
+                  "description": "Not authenticated."
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericResponse"
+                },
+                "example": {
+                  "status": 404,
+                  "description": "User not found."
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "description": "Update information about a player.",
+        "tags": ["player","authorized"],
+        "parameters": [
+          {
+            "name": "id",
+            "description": "The cosmetic to cycle",
+            "in": "path",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "up",
+                "down"
+              ]
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200":{
+            "description": "Successfully updated cosmetic slot.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Player"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authenticated.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericResponse"
+                },
+                "example": {
+                  "status": 401,
+                  "description": "Not authenticated."
                 }
               }
             }
