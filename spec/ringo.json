@@ -1,0 +1,355 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Ringo",
+    "description": "Ringo API",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https"
+    }
+  ],
+  "paths": {
+    "/room": {
+      "get": {
+        "description": "Get Information about the players in a room.",
+        "security": [
+          {
+            "UserAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "settings": {
+                      "$ref": "#/components/schemas/RoomSettings"
+                    },
+                    "players": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Player"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authenticated.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericResponse"
+                },
+                "example": {
+                  "status": 401,
+                  "description": "Not authenticated."
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Create a new room",
+        "security": [
+          {}
+        ],
+        "parameters": [
+          {
+            "name": "username",
+            "description": "The username to use.",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string",
+              "example": "ExampleUser123"
+            }
+          }
+        ],
+        "responses": {
+          "101": {
+            "description": "Successfully entered a room, now switching protocols.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TokenResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "No available room code.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericResponse"
+                },
+                "example": {
+                  "status": 503,
+                  "description": "No available room code."
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "description": "Change the rooms settings.",
+        "security": [
+          {
+            "UserAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Changes where applied.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericResponse"
+                },
+                "example": {
+                  "status": 200,
+                  "description": "Changes where applied."
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "User is not host.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericResponse"
+                },
+                "example": {
+                  "status": 401,
+                  "description": "User is not host."
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Invalid settings.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericResponse"
+                },
+                "example": {
+                  "status": 406,
+                  "description": "Invalid settings."
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "description": "Enter a game room.",
+        "security": [
+          {}
+        ],
+        "parameters": [
+          {
+            "name": "code",
+            "description": "The code of the room to enter.",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "integer",
+              "example": 123456
+            }
+          },
+          {
+            "name": "username",
+            "description": "The username to use.",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string",
+              "example": "ExampleUser123"
+            }
+          }
+        ],
+        "responses": {
+          "101": {
+            "description": "Successfully entered a room, now switching protocols.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TokenResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Room is currently full.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericResponse"
+                },
+                "example": {
+                  "status": 403,
+                  "description": "Room is currently full."
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Room was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericResponse"
+                },
+                "example": {
+                  "status": 404,
+                  "description": "Room was not found."
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Username already taken.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericResponse"
+                },
+                "example": {
+                  "status": 409,
+                  "description": "Username already taken."
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "Leave the room.",
+        "security": [
+          {
+            "UserAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully left room.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericResponse"
+                },
+                "example": {
+                  "status": 200,
+                  "description": "Successfully left room."
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "No user found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericResponse"
+                },
+                "example": {
+                  "status": 401,
+                  "description": "No user was found."
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "UserAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "GenericResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "integer"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      },
+      "TokenResponse": {
+        "type": "object",
+        "properties": {
+          "bearer": {
+            "type": "string"
+          }
+        }
+      },
+      "RoomSettings": {
+        "type": "object",
+        "properties": {
+          "board_size": {
+            "type": "integer"
+          },
+          "duration": {
+            "type": "integer"
+          },
+          "starting_time": {
+            "type": "string",
+            "nullable": true
+          },
+          "list": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "Player": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "is_host": {
+            "type": "boolean"
+          },
+          "cosmetic": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  },
+  "security": [
+    {},
+    {
+      "UserAuth": []
+    }
+  ]
+}
