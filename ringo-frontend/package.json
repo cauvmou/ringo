@@ -13,7 +13,9 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "naive-ui": "^2.36.0",
     "pinia": "^2.1.7",
+    "sass": "^1.69.5",
     "vue": "^3.3.11",
     "vue-router": "^4.2.5"
   },
