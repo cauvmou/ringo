@@ -1,32 +1,34 @@
 <script setup lang="ts">
-defineProps<{
-  msg: string;
-}>();
+import { ref } from "vue";
+import { NSpace } from "naive-ui";
+import BingoField from "@/components/BingoField.vue";
+
+// temp
+const fields = ref<Array<string>>(
+   Array(25)
+      .fill(1)
+      .map((n, i) => n + i),
+);
+const crossedFields = ref<Array<string>>([]);
 </script>
 
-<template>penis</template>
+<template>
+   <div class="container">
+      <n-space>
+         <BingoField
+            v-for="field in fields"
+            :key="field"
+            :label="field"
+            :crossed="crossedFields[field]"
+            @click="crossedFields[field] = !crossedFields[field]"
+         />
+      </n-space>
+   </div>
+</template>
 
 <style scoped>
-h1 {
-  font-weight: 500;
-  font-size: 2.6rem;
-  position: relative;
-  top: -10px;
-}
-
-h3 {
-  font-size: 1.2rem;
-}
-
-.greetings h1,
-.greetings h3 {
-  text-align: center;
-}
-
-@media (min-width: 1024px) {
-  .greetings h1,
-  .greetings h3 {
-    text-align: left;
-  }
+.container {
+   width: 53.5em;
+   margin: auto auto;
 }
 </style>
