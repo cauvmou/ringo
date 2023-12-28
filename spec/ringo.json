@@ -20,23 +20,26 @@
       "description": "Paths that relate directly to the player."
     },
     {
+      "name": "game",
+      "description": "Paths that relate to the running game."
+    },
+    {
       "name": "unauthorized",
       "description": "Paths that are accessible without authorization."
     },
     {
       "name": "authorized",
       "description": "Paths that are only accessible with authorization."
-    },
-    {
-      "name": "game",
-      "description": "Paths that relate to the running game."
     }
   ],
   "paths": {
     "/room": {
       "get": {
         "description": "Get Information about the players in a room.",
-        "tags": ["room","authorized"],
+        "tags": [
+          "room",
+          "authorized"
+        ],
         "security": [
           {
             "UserAuth": []
@@ -85,7 +88,10 @@
       },
       "post": {
         "description": "Create a new room",
-        "tags": ["room","unauthorized"],
+        "tags": [
+          "room",
+          "unauthorized"
+        ],
         "security": [
           {}
         ],
@@ -130,7 +136,10 @@
       },
       "patch": {
         "description": "Change the rooms settings.",
-        "tags": ["room","authorized"],
+        "tags": [
+          "room",
+          "authorized"
+        ],
         "security": [
           {
             "UserAuth": []
@@ -183,7 +192,10 @@
       },
       "put": {
         "description": "Enter a game room.",
-        "tags": ["room","unauthorized"],
+        "tags": [
+          "room",
+          "unauthorized"
+        ],
         "security": [
           {}
         ],
@@ -266,7 +278,10 @@
       },
       "delete": {
         "description": "Leave the room.",
-        "tags": ["room","authorized"],
+        "tags": [
+          "room",
+          "authorized"
+        ],
         "security": [
           {
             "UserAuth": []
@@ -307,7 +322,10 @@
     "/player": {
       "get": {
         "description": "Get information about a player.",
-        "tags": ["player","authorized"],
+        "tags": [
+          "player",
+          "authorized"
+        ],
         "security": [
           {
             "UserAuth": []
@@ -367,7 +385,10 @@
       },
       "patch": {
         "description": "Update information about a player.",
-        "tags": ["player","authorized"],
+        "tags": [
+          "player",
+          "authorized"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -384,7 +405,7 @@
           }
         ],
         "responses": {
-          "200":{
+          "200": {
             "description": "Successfully updated cosmetic slot.",
             "content": {
               "application/json": {
@@ -411,7 +432,211 @@
         }
       }
     },
-    "/game": {}
+    "/game": {
+      "get": {
+        "description": "Get the players board.",
+        "tags": [
+          "game",
+          "authorized"
+        ],
+        "security": [
+          {
+            "UserAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully got the players board.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Board"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authenticated.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericResponse"
+                },
+                "example": {
+                  "status": 401,
+                  "description": "Not authenticated."
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Game has not started yet.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericResponse"
+                },
+                "example": {
+                  "status": 403,
+                  "description": "Game has not started yet."
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Starts the game.",
+        "tags": [
+          "game",
+          "authorized"
+        ],
+        "security": [
+          {
+            "UserAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Starting the game."
+          },
+          "401": {
+            "description": "Not authenticated.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericResponse"
+                },
+                "example": {
+                  "status": 401,
+                  "description": "Not authenticated."
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Game already started.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericResponse"
+                },
+                "example": {
+                  "status": 403,
+                  "description": "Game already started."
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "description": "Update a field of a players board.",
+        "tags": [
+          "game",
+          "authorized"
+        ],
+        "security": [
+          {
+            "UserAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "index",
+            "description": "The index of the field to cross out",
+            "in": "path",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully updated field",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Board"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authenticated.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericResponse"
+                },
+                "example": {
+                  "status": 401,
+                  "description": "Not authenticated."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/game/bingo": {
+      "get": {
+        "description": "Get the players that have achieved a bingo.",
+        "tags": [
+          "game",
+          "authorized"
+        ],
+        "security": [
+          {
+            "UserAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully got the players with a bingo.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Player"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authenticated.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericResponse"
+                },
+                "example": {
+                  "status": 401,
+                  "description": "Not authenticated."
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Game has not started yet.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericResponse"
+                },
+                "example": {
+                  "status": 403,
+                  "description": "Game has not started yet."
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   },
   "components": {
     "securitySchemes": {
@@ -454,6 +679,14 @@
             "type": "string",
             "nullable": true
           },
+          "generation_type": {
+            "type": "string",
+            "enum": [
+              "EQ",
+              "EQR",
+              "R"
+            ]
+          },
           "list": {
             "type": "array",
             "items": {
@@ -482,7 +715,10 @@
       "Board": {
         "type": "object",
         "properties": {
-          "seed": {
+          "position_seed": {
+            "type": "string"
+          },
+          "field_seed": {
             "type": "string"
           },
           "size": {
@@ -508,6 +744,36 @@
           "crossed_at": {
             "type": "string",
             "nullable": true
+          }
+        }
+      },
+      "Message": {
+        "description": "This object is used inside the ws.",
+        "type": "object",
+        "properties": {
+          "sequence": {
+            "description": "If the sequence is out of sync, client must do a full refresh.",
+            "type": "integer"
+          },
+          "source_player": {
+            "type": "string",
+            "nullable": true
+          },
+          "target_player": {
+            "type": "string",
+            "nullable": true
+          },
+          "event": {
+            "type": "string",
+            "enum": [
+              "PLAYER_JOIN",
+              "PLAYER_UPDATE",
+              "PLAYER_LEAVE",
+              "SETTINGS_UPDATE",
+              "GAME_START",
+              "GAME_UPDATE",
+              "GAME_BINGO_UPDATE"
+            ]
           }
         }
       }
