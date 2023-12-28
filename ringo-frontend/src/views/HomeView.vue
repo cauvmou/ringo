@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import TheWelcome from '../components/TheWelcome.vue'
+import BingoBoard from "@/components/BingoBoard.vue";
 </script>
 
 <template>
   <main>
-    <TheWelcome />
+    <BingoBoard />
   </main>
 </template>
