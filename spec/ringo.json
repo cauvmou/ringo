@@ -30,6 +30,10 @@
     {
       "name": "authorized",
       "description": "Paths that are only accessible with authorization."
+    },
+    {
+      "name": "websocket",
+      "description": "Paths that initiate a socket."
     }
   ],
   "paths": {
@@ -108,8 +112,8 @@
           }
         ],
         "responses": {
-          "101": {
-            "description": "Successfully entered a room, now switching protocols.",
+          "200": {
+            "description": "Successfully entered a room",
             "content": {
               "application/json": {
                 "schema": {
@@ -222,8 +226,8 @@
           }
         ],
         "responses": {
-          "101": {
-            "description": "Successfully entered a room, now switching protocols.",
+          "200": {
+            "description": "Successfully entered a room.",
             "content": {
               "application/json": {
                 "schema": {
@@ -630,6 +634,39 @@
                 "example": {
                   "status": 403,
                   "description": "Game has not started yet."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/socket": {
+      "get": {
+        "description": "Get Information about the players in a room.",
+        "tags": [
+          "websocket",
+          "authorized"
+        ],
+        "security": [
+          {
+            "UserAuth": []
+          }
+        ],
+        "responses": {
+          "101":{
+            "description": "Switching protocols. See the Message type for protocol information."
+          },
+          "401": {
+            "description": "Not authenticated.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericResponse"
+                },
+                "example": {
+                  "status": 401,
+                  "description": "Not authenticated."
                 }
               }
             }
