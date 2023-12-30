@@ -16,14 +16,10 @@ const type = computed<Type>(() => (props.crossed ? "primary" : "default"));
 </script>
 
 <template>
-   <n-button :type="type" class="field" :on-click="() => emit('click')">
+   <n-button :type="type" class="h-32 w-32" :on-click="() => emit('click')">
       {{ label }}
    </n-button>
 </template>
 
 <style scoped lang="scss">
-.field {
-   width: 10em;
-   height: 10em;
-}
 </style>

@@ -13,7 +13,7 @@ const crossedFields = ref<Array<string>>([]);
 </script>
 
 <template>
-   <div class="container">
+   <div class="container w-[50em] mx-auto">
       <n-space>
          <BingoField
             v-for="field in fields"
@@ -27,8 +27,4 @@ const crossedFields = ref<Array<string>>([]);
 </template>
 
 <style scoped>
-.container {
-   width: 53.5em;
-   margin: auto auto;
-}
 </style>

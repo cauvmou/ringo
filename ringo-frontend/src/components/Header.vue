@@ -16,15 +16,15 @@ function redirect() {
 </script>
 
 <template>
-   <div class="header">
-      <div class="title" @click="redirect">
+   <div class="header flex flex-row px-3 py-2">
+      <div class="title cursor-pointer" @click="redirect">
          <h1>Ringo</h1>
       </div>
       <n-menu mode="horizontal">
          <!--TODO-->
       </n-menu>
-      <div class="align-right">
-         <n-switch :value="themeStore.darkThemeActive" @update:value="themeStore.flipTheme" />
+      <div class="align-right flex flex-row-reverse ml-auto">
+         <n-switch :value="themeStore.darkThemeActive" @update:value="themeStore.flipTheme" title="Lightmode/Darkmode Switch" />
          <svg
             xmlns="http://www.w3.org/2000/svg"
             xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -47,23 +47,4 @@ function redirect() {
 </template>
 
 <style lang="scss" scoped>
-.header {
-   display: flex;
-   flex-direction: row;
-   padding: 5px 10px 5px 10px;
-
-   .align-right {
-      display: flex;
-      flex-direction: row-reverse;
-      margin-left: auto;
-
-      .icon {
-         height: 100%;
-      }
-   }
-
-   .title {
-      cursor: pointer;
-   }
-}
 </style>

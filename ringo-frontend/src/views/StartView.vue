@@ -10,7 +10,7 @@ import {
    FormItemRule,
    FormValidationError,
    useMessage,
-   FormRules,
+   FormRules, NImage
 } from "naive-ui";
 
 const formRef = ref<FormInst | null>(null);
@@ -50,10 +50,13 @@ function handleValidateClick(e: MouseEvent) {
 </script>
 
 <template>
-   <main>
-      <div class="center">
-         <img src="/public/image.png" alt="Ringo Logo">
-         <n-form :model="formValue" ref="formRef" label-placement="top" class="form" :rules="rules">
+   <div class="flex h-screen justify-center align-middle">
+      <div class="self-center flex flex-col gap-8">
+         <div class="branding flex flex-col gap-2 text-center">
+            <n-image class="w-1/2 self-center" src="/src/assets/ringo-logo.svg" alt="Ringo Logo" preview-disabled />
+            <h1 class="text-7xl">RINGO</h1>
+         </div>
+         <n-form :model="formValue" ref="formRef" label-placement="top" class="form flex flex-col gap-2" :rules="rules">
             <n-form-item label="Nickname" path="nicknameValue">
                <n-input v-model:value="formValue.user.name" placeholder="Nickname" />
             </n-form-item>
@@ -63,37 +66,14 @@ function handleValidateClick(e: MouseEvent) {
             <n-button
                :disabled="formValue.user.name == null || formValue.user.password == null"
                round
-               type="primary"
                @click="handleValidateClick"
             >
                Join Room
             </n-button>
          </n-form>
       </div>
-   </main>
+   </div>
 </template>
 
 <style scoped lang="scss">
-main {
-   display: flex;
-   height: 100vh;
-   justify-content: center;
-   align-items: center;
-
-   .center {
-      display: flex;
-      flex-direction: column;
-      gap: 4em;
-
-      img {
-         height: 10em;
-      }
-
-      .form {
-         display: flex;
-         flex-direction: column;
-         gap: 1em;
-      }
-   }
-}
 </style>
